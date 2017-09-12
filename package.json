@@ -1,0 +1,20 @@
+{
+  "name": "checkpoint-brave",
+  "version": "1.0.0",
+  "description": "Service to determine if a given IP address is potentially malicious",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ktsashes/checkpoint-brave.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/ktsashes/checkpoint-brave/issues"
+  },
+  "homepage": "https://github.com/ktsashes/checkpoint-brave#readme",
+  "private": true
+}
