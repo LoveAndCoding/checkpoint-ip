@@ -16,5 +16,8 @@
     "url": "https://github.com/ktsashes/checkpoint-brave/issues"
   },
   "homepage": "https://github.com/ktsashes/checkpoint-brave#readme",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "simple-git": "^1.77.0"
+  }
 }
