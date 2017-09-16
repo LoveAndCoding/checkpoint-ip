@@ -14,7 +14,7 @@ function sendToWorkers(data) {
 if (cluster.isMaster) {
 	console.log(`Master ${process.pid} is running`);
 
-	load('./firehol_level1.netset', 'Firehol Level 1')
+	load(true)
 		.then((ips) => {
 			// Fork workers.
 			for (let i = 0; i < numCPUs; i++) {
