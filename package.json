@@ -20,5 +20,9 @@
   "dependencies": {
     "ip": "^1.1.5",
     "split": "^1.0.1"
+  },
+  "devDependencies": {
+    "commander": "^2.11.0",
+    "tty-table": "^2.5.5"
   }
 }
