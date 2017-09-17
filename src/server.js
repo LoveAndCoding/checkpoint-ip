@@ -38,6 +38,9 @@ module.exports = net.createServer((connection) => {
 		}
 	});
 	
+	connection.on('error', function (err) {
+		console.error('Socket connection error: %s', err.message);
+	});
 }).listen(process.env.PORT || 8000);
 
 console.log(`Socket server has started`);
