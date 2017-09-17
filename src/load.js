@@ -14,7 +14,6 @@ const LIST_NAME = 'Firehol Level 1';
 function getFromUrl(url) {
 	return new Promise((resolve, reject) => {
 		http.get(url, (res) => {
-			let error;
 			if(res.statusCode !== 200) {
 				res.resume();
 				reject(new Error('URL (' + url + ') currently unavailable'));
@@ -51,7 +50,9 @@ function attachToStream(stream) {
 }
 
 function addToTree(tree, address) {
-	if(!address) return;
+	if(!address) {
+		return;
+	}
 	
 	const parts = address.split('/');
 	if(ip.isV4Format(address)) {
@@ -84,8 +85,6 @@ function addToTree(tree, address) {
 	} else if(parts.length === 2 && ip.isV4Format(parts[0]) && Number(parts[1]) == parts[1]) {
 		// We've got a IP v4 range of addresses
 		const range = ip.cidrSubnet(address);
-		const startLong = ip.toLong(range.firstAddress);
-		const endLong = ip.toLong(range.lastAddress);
 		const firstAddrParts = range.firstAddress.split('.');
 		const lastAddrParts = range.lastAddress.split('.');
 		const maskLen = range.subnetMaskLength;
@@ -134,7 +133,7 @@ module.exports = (useLocalBackup) => {
 			throw err;
 		}
 		return attachToStream(fs.createReadStream(LOCAL_BACKUP, {
-				encoding: 'utf8',
-			}));
+			encoding: 'utf8',
+		}));
 	});
 };

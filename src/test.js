@@ -1,8 +1,8 @@
 'use strict';
 
-var obj = {};
+const obj = {};
 
-var rot = '0',
+let rot = '0',
 	top = 0,
 	mid = 0,
 	bot = 1;
@@ -14,7 +14,7 @@ console.log(process.memoryUsage());
 
 while(top < 255 || mid < 255 || bot < 255) {
 	
-	var sTop = '' + top,
+	const sTop = '' + top,
 		sMid = '' + mid,
 		sBot = '' + bot;
 	

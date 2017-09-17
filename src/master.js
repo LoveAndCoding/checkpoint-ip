@@ -34,7 +34,7 @@ module.exports = updateList(true)
 	.then(() => {
 		createCluster();
 		
-		cluster.on('exit', (worker, code, signal) => {
+		cluster.on('exit', (worker, code) => {
 			console.log(`Socket serer in process ${worker.process.pid} died with code ${code}. Recreating`);
 			createCluster();
 		});

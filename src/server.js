@@ -2,7 +2,6 @@
 
 const cluster = require('cluster');
 const net = require('net');
-const ip = require('ip');
 
 let ipMap = Object.create(null);
 

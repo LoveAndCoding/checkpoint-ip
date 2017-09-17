@@ -1,0 +1,75 @@
+{
+    "env": {
+        "es6": true,
+        "node": true
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        "indent": [
+            "warn",
+            "tab",
+            {
+                "SwitchCase": 1,
+                "MemberExpression": 1,
+                "FunctionDeclaration": {"body": 1, "parameters": 2},
+                "FunctionExpression": {"body": 1, "parameters": 2},
+                "ArrayExpression": 1,
+                "ObjectExpression": 1
+            }
+        ],
+        "curly": [
+            "warn",
+            "all"
+        ],
+        "yoda": [
+            "warn",
+            "never",
+            { "exceptRange": true }
+        ],
+        "strict": [
+            "warn",
+            "global"
+        ],
+        "block-spacing": [
+            "warn",
+            "always"
+        ],
+        "brace-style": [
+            "warn",
+            "1tbs"
+        ],
+        "comma-dangle": [
+            "warn",
+            {
+                "arrays": "only-multiline",
+                "objects": "always-multiline",
+                "imports": "only-multiline",
+                "exports": "only-multiline",
+                "functions": "never"
+            }
+        ],
+        "comma-spacing": [
+            "warn",
+            {
+                "before": false,
+                "after": true
+            }
+        ],
+        "comma-style": [
+            "warn",
+            "last"
+        ],
+        "eol-last": [
+            "warn",
+            "always"
+        ],
+        "func-call-spacing": [
+            "warn",
+            "never"
+        ],
+        "new-cap": "warn",
+        "no-var": "error",
+        "no-fallthrough": "off",
+        "no-console": "off"
+    }
+}
