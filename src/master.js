@@ -30,7 +30,7 @@ function updateList(loadFromFile) {
 	});
 }
 
-module.exports = updateList(true)
+exports.start = updateList(true)
 	.then(() => {
 		createCluster();
 		
@@ -38,6 +38,11 @@ module.exports = updateList(true)
 			console.log(`Socket serer in process ${worker.process.pid} died with code ${code}. Recreating`);
 			createCluster();
 		});
+		
+		// Start a timer for updating the block list
+		exports.updateTimer = setTimeout(() => {
+			exports.triggerUpdate(true);
+		}, INTERVAL_TIME);
 	})
 	.then(() => {
 		console.log('Application Running')
@@ -46,11 +51,28 @@ module.exports = updateList(true)
 	});
 
 // Setup Interval on which to update list
-setInterval(() => {
-	updateList(false).then(() => {
+exports.triggerUpdate = (setTimer) => {
+	// We're updating, cancel any pending timed updates
+	exports.cancelUpdate();
+	
+	return updateList(false).then(() => {
 		sendToWorkers();
+		
+		if(setTimer) {
+			exports.updateTimer = setTimeout(() => {
+				exports.triggerUpdate(setTimer);
+			}, INTERVAL_TIME);
+			return exports.updateTimer;
+		}
 	}).catch((err) => {
 		console.error('Unable to retrieve updated IP list');
 		console.error(err);
 	});
-}, INTERVAL_TIME);
+};
+
+exports.cancelUpdate = () => {
+	if(exports.updateTimer) {
+		clearTimeout(exports.updateTimer);
+	}
+	exports.updateTimer = null;
+};
