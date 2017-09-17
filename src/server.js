@@ -41,4 +41,4 @@ module.exports = net.createServer((connection) => {
 	
 }).listen(process.env.PORT || 8000);
 
-console.log(`Worker ${process.pid} started`);
+console.log(`Socket server has started`);

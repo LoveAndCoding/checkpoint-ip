@@ -1,36 +1,58 @@
 'use strict';
 
 const cluster = require('cluster');
-const numCPUs = require('os').cpus().length;
+// We use CPU count minus 1 to allow 1 CPU for loading and processing data
+const numCPUs = Math.max(require('os').cpus().length - 1, 1);
 
 const load = require('./load');
 
-function sendToWorkers(data) {
+const INTERVAL_TIME = 3 * 60 * 1000; /* 3 minutes */
+
+let latestIPList;
+
+function createCluster() {
+	let amountToAdd = numCPUs - Object.keys(cluster.workers).length;
+	
+	for(let i = 0; i < amountToAdd; i++) {
+		cluster.fork().send(latestIPList);
+	}
+}
+
+function sendToWorkers() {
 	for(let id in cluster.workers) {
-		cluster.workers[id].send(data);
+		cluster.workers[id].send(latestIPList);
 	}
 }
 
 if (cluster.isMaster) {
-	console.log(`Master ${process.pid} is running`);
-
 	load(true)
 		.then((ips) => {
-			// Fork workers.
-			for (let i = 0; i < numCPUs; i++) {
-				cluster.fork();
-			}
+			latestIPList = ips;
 			
-			sendToWorkers(ips);
+			createCluster();
 			
 			cluster.on('exit', (worker, code, signal) => {
-				console.log(`worker ${worker.process.pid} died`);
+				console.log(`Socker serer in process ${worker.process.pid} died with code ${code}. Recreating`);
+				createCluster();
 			});
 		})
-		.then(null, (err) => {
+		.then(() => {
+			console.log('Application Running')
+		}, (err) => {
 			console.error(err);
 		});
 	
+	setInterval(() => {
+		console.log('Updating IP Block List...')
+		load(false).then((ips) => {
+			latestIPList = ips;
+			sendToWorkers();
+			console.log('IP Blocklist Updated')
+		}).catch((err) => {
+			console.error('Unable to retrieve updated IP list');
+			console.error(err);
+		});
+	}, INTERVAL_TIME);
 } else {
 	const server = require('./server');
 }
