@@ -4,7 +4,8 @@
   "description": "Service to determine if a given IP address is potentially malicious",
   "main": "src/app.js",
   "scripts": {
-    "test": "./node_modules/.bin/mocha test/e2e.js"
+    "test": "./node_modules/.bin/mocha test/e2e.js",
+    "benchmark": "node test/benchmark"
   },
   "repository": {
     "type": "git",
