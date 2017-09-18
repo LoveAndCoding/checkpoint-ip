@@ -136,4 +136,27 @@ describe('End to End tests', function () {
 		
 		connection.write('104.132.7.13\n');
 	});
+	
+	it('should respond with an error message if the IP Address does not follow a basic IPv4 format', function (done) {
+		let currChunk = '';
+		connection.on('data', function (chunk) {
+			currChunk += chunk;
+			
+			if(currChunk.indexOf('\n') >= 0) {
+				let json;
+				try {
+					json = JSON.parse(currChunk)
+				} catch(err) {
+					done(err);
+				}
+				should(json).be.Object();
+				should(json.ip).equal('foo');
+				should(json.allowed).be.false();
+				should(json.error).be.a.String().which.is.not.empty();
+				done();
+			}
+		});
+		
+		connection.write('foo\n');
+	});
 });
