@@ -82,7 +82,7 @@ function addToTree(tree, address) {
 		}
 		
 		tree[byt0][byt1][byt2][byt3] = LIST_NAME;
-	} else if(parts.length === 2 && ip.isV4Format(parts[0]) && Number(parts[1]) == parts[1]) {
+	} else if(parts.length === 2 && ip.isV4Format(parts[0]) && parts[1].match(/^[0-2]?[0-9]$/)) {
 		// We've got a IP v4 range of addresses
 		const range = ip.cidrSubnet(address);
 		const firstAddrParts = range.firstAddress.split('.');

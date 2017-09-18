@@ -2,10 +2,9 @@
 
 const cluster = require('cluster');
 const net = require('net');
+const ip = require('ip');
 
 let ipMap = Object.create(null);
-
-const simpleIPv4Regex = /[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}/;
 
 cluster.worker.on('message', (data) => {
 	ipMap = data;
@@ -15,7 +14,7 @@ module.exports = net.createServer((connection) => {
 	connection.setEncoding('utf8');
 	
 	function checkIp(address) {
-		if(!simpleIPv4Regex.test(address)) {
+		if(!ip.isV4Format(address)) {
 			console.warn('Received IP Address in an unexpected format (%s)', address);
 			
 			connection.write(JSON.stringify({
